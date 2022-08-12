@@ -83,15 +83,17 @@ let createButtons = function (li) {
   liEditArray.push(editLiBtn)
   editLiBtn.onclick = () => {
     addClass(li, 'hide')
-    editLiBtn.insertAdjacentHTML('beforebegin', `<input class="liInput" maxlength="20"></input>`)
+    editLiBtn.insertAdjacentHTML('beforebegin', `<input class="liInput" maxlength="20" </input>`)
     let liInput = document.querySelector('.liInput')
+    liInput.value = li.textContent
     liInput.insertAdjacentHTML('afterend', `<button class="li-save-btn">SAVE</button>`)
     let liSaveBtn = document.querySelector('.li-save-btn')
     addClass(editLiBtn, 'hide')
     liSaveBtn.onclick = () => {
       if (liInput.value) {
         removeClass(li, 'hide')
-        li.textContent = li.textContent.charAt(0) + '. ' + liInput.value
+        // li.textContent = li.textContent.charAt(0) + '. ' + liInput.value
+        li.textContent = liInput.value
         liInput.remove()
         removeClass(editLiBtn, 'hide')
         liSaveBtn.remove()
