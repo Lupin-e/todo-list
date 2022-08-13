@@ -45,6 +45,18 @@ function deleteAll() {
   }
 }
 
+
+function getNumber (paramIndex) {
+  liArray.forEach((item, index) => {
+    if (paramIndex < 9 && index === 8) {
+      item.textContent = index + 1 + item.textContent.slice(2, item.textContent.length);
+    }else {
+      item.textContent = index + 1 + item.textContent.slice((index + 1 ).toString().length, item.textContent.length);
+    }
+  })
+}
+
+
 let createButtons = function (li) {
   
   const delLiBtn = document.createElement('button')
@@ -54,25 +66,19 @@ let createButtons = function (li) {
   liDelArray.push(delLiBtn)
   delLiBtn.onclick = () => {
     const neededLiIndex = liArray.findIndex(el => el === li);
-    
     li.remove()
     liArray.splice(neededLiIndex, 1)
-    liArray.forEach((item, index) => {
-      if(index=== 9 || index === 10) {
-        item.textContent = index + 1 + item.textContent.slice(2, item.textContent.length);
-        
-      }else if (neededLiIndex < 9 && index === 8) {
-        item.textContent = index + 1 + item.textContent.slice(2, item.textContent.length);
-      }else {
-        item.textContent = index + 1 + item.textContent.slice(index.toString().length, item.textContent.length);
-      }
-      
-    })
+    getNumber (neededLiIndex)
     delLiBtn.remove()
     editLiBtn.remove()
     
     if (!document.querySelector('li')) {
       deleteAll()
+    }
+
+    if(liArray.length <= 9) {
+      removeClass(liContent, 'hide')
+      removeClass(liCreateBtn, 'hide')
     }
   }
 
@@ -92,7 +98,6 @@ let createButtons = function (li) {
     liSaveBtn.onclick = () => {
       if (liInput.value) {
         removeClass(li, 'hide')
-        // li.textContent = li.textContent.charAt(0) + '. ' + liInput.value
         li.textContent = liInput.value
         liInput.remove()
         removeClass(editLiBtn, 'hide')
@@ -140,6 +145,11 @@ liCreateBtn.addEventListener('click', function () {
     liArray.push(lastLi)
     liContent.value = "";
     createButtons(lastLi)
+    if(liArray.length > 9) {
+      addClass(liContent, 'hide')
+      addClass(liCreateBtn, 'hide')
+      setTimeout(()=> {alert("Максимум 10 завдань")}, 500) 
+    }
   } else {
     alert("Введіть значення");
   }
